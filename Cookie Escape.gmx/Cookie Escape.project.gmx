@@ -5,9 +5,30 @@
   </Configs>
   <NewExtensions/>
   <sounds name="sound"/>
-  <sprites name="sprites"/>
-  <backgrounds name="background"/>
+  <sprites name="sprites">
+    <sprite>sprites\spr_face</sprite>
+    <sprite>sprites\spr_cookie_cc</sprite>
+    <sprite>sprites\spr_block</sprite>
+    <sprite>sprites\spr_hooksegment</sprite>
+    <sprite>sprites\spr_hooktip</sprite>
+  </sprites>
+  <backgrounds name="background">
+    <background>background\bg_tile</background>
+  </backgrounds>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\player_draw.gml</script>
+    <script>scripts\player_step.gml</script>
+    <script>scripts\player_collision.gml</script>
+    <script>scripts\closest_block_side.gml</script>
+  </scripts>
+  <objects name="objects">
+    <object>objects\obj_player</object>
+    <object>objects\obj_block</object>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\rm_play</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
