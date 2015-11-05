@@ -26,11 +26,22 @@ if (goback) {
                 x += lengthdir_x(2,dir);
                 y += lengthdir_y(2,dir);
             }
+            //Fix hook angle
             image_angle=point_direction(obj_player.x,obj_player.y,x,y);
             fixedangle=true;
             speed=0;
-            obj_player.beingpulled=true;
-            obj_player.gravity=0;
+            with (obj_player) {
+                beingpulled=true;
+                gravity=0;
+                
+                //Also make sure player is not inside any block
+                var col = instance_place(x,y,obj_block);
+                player_collision(col);
+            }
+            
+            if (allowboosts) {
+                effect_grapple(x,y,image_angle+180);
+            }
         }
     } else {
     //Grappled! Pull player

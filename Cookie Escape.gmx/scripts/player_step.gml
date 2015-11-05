@@ -19,11 +19,11 @@ if (gravity > 0 &&
 //Fired hook?
 
 if (device_mouse_check_button_pressed(0,mb_left) && !instance_exists(obj_hooktip)) {
-    var mx = device_mouse_x(0);
-    var my = device_mouse_y(0);
+    var mx = device_mouse_x_to_gui(0)
+    var my = device_mouse_y_to_gui(0);
     var gdir = -1; //Grapple direction
     
-    if (mx > room_width*0.5) {
+    if (mx > view_wview[0]*0.5) {
         gdir = 1;    
     }
     
@@ -31,12 +31,17 @@ if (device_mouse_check_button_pressed(0,mb_left) && !instance_exists(obj_hooktip
 }
 
 if (device_mouse_check_button_released(0,mb_left)) {
-    beingpulled=false;
-    gravity=grav;
-    with (obj_hooktip) {
-        goback=true;
-        grappled=false;
+    if (instance_exists(obj_hooktip)) {
+        if (obj_hooktip.allowboosts) //Close ranged grapples don't count
+        if (instance_exists(obj_hooktip.attachedblock)) {
+            //wb_tolerance -> A little after (bigger time window)
+            //Face==0 and distance -> A little before
+            if (wb_tolerance || (face==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
+                player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir);
+            }
+        }
     }
+    player_release();
 }
 
 //Being pulled?
@@ -44,6 +49,11 @@ if (device_mouse_check_button_released(0,mb_left)) {
 if (beingpulled && abs(speed)<0.1) {
     if (face==0) {
         face=1;
+        if (instance_exists(obj_hooktip)) { //it SHOULD always exist if we got this far... but just in case
+            if (point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)
+                wb_tolerance=true; //Only allow wallboost if we are close enough to the hook (didn't get stuck somewhere else)
+        }
+        alarm[9]=room_speed*0.2;
         speed=0;
     }
 }
