@@ -32,6 +32,7 @@ if (goback) {
             speed=0;
             with (obj_player) {
                 beingpulled=true;
+                invincible=false;
                 gravity=0;
                 
                 //Also make sure player is not inside any block

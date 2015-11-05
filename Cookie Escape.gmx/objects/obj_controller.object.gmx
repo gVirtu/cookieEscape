@@ -27,15 +27,81 @@
             <kind>1</kind>
             <string>init_particles();
 
-/*
-uni_resolution = shader_get_uniform(sh_scanlines,"resolution");
-var_resolution_x = RES_W;
-var_resolution_y = RES_H;
+//Ripple Effect Parameters
+ripple_resolution = shader_get_uniform(sh_ripple,"resolution");
+ripple_resolution_x = RES_W;
+ripple_resolution_y = RES_H;
 
-shader_enabled = true;
-*/
+ripple_time = shader_get_uniform(sh_ripple,"time");
+ripple_time_var = 0;
+
+ripple_pos = shader_get_uniform(sh_ripple,"r_pos");
+ripple_pos_x = view_wview[0]*0.5;
+ripple_pos_y = view_hview[0]*0.5;
+
+ripple_wave_amount = shader_get_uniform(sh_ripple,"wave_amount");
+ripple_wave_amount_var = 10; //higher = more waves
+
+ripple_wave_distortion = shader_get_uniform(sh_ripple,"wave_distortion");
+ripple_wave_distortion_var = 30; //higher = less distortion
+ripple_wave_distortion_delta = 0; //Variation
+
+ripple_wave_speed = shader_get_uniform(sh_ripple,"wave_speed");
+ripple_wave_speed_var = 10.0; //higher = faster
+
+ripple_enabled = true;
+
+pspawn_x=0;
+pspawn_y=0;
 
 alarm[0]=1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Ripple timeout
+ripple_enabled = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>instance_create(pspawn_x,pspawn_y,obj_player);
 </string>
           </argument>
         </arguments>
@@ -64,6 +130,33 @@ alarm[0]=1;
         </arguments>
       </action>
     </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Ripple controlling
+if (ripple_enabled) {
+    ripple_time_var += 0.04;
+    ripple_wave_distortion_var += ripple_wave_distortion_delta;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="7" enumb="5">
       <action>
         <libid>1</libid>
@@ -82,6 +175,43 @@ alarm[0]=1;
           <argument>
             <kind>1</kind>
             <string>part_system_clear(global.ps);
+ripple_enabled=false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (ripple_enabled) {
+    if (shader_is_compiled(sh_ripple)) {
+        shader_set(sh_ripple);
+        shader_set_uniform_f(ripple_time, ripple_time_var);
+        shader_set_uniform_f(ripple_pos, ripple_pos_x, ripple_pos_y);
+        shader_set_uniform_f(ripple_resolution, ripple_resolution_x, ripple_resolution_y);
+        shader_set_uniform_f(ripple_wave_amount, ripple_wave_amount_var);
+        shader_set_uniform_f(ripple_wave_distortion, ripple_wave_distortion_var );
+        shader_set_uniform_f(ripple_wave_speed, ripple_wave_speed_var);
+    }
+    draw_surface_stretched(application_surface,0,0,display_get_true_width(),display_get_gui_height());
+}
+shader_reset();
+
 </string>
           </argument>
         </arguments>

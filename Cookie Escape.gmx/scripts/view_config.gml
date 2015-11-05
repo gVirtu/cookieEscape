@@ -4,8 +4,14 @@ with (obj_camera) {
     view_visible[0]=true;
     view_wview[0]=960;
     view_hview[0]=1280;
-    view_wport[0]=view_wview[0];
-    view_hport[0]=view_hview[0];
+    if (os_type==os_android || os_type==os_ios) {
+        view_wport[0]=view_wview[0];
+        view_hport[0]=view_hview[0];
+    } else {
+        view_wport[0]=720;
+        view_hport[0]=960;
+    }
+    
     view_hspeed[0]=-1;
     view_vspeed[0]=20; //Will be free in alarm[0]
     view_object[0]=obj_camera;
