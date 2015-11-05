@@ -1,7 +1,8 @@
-///player_wallboost(col,dir)
+///player_wallboost(col,dir,strong)
 
 var col=argument0;
 var dir=argument1;
+var strong=argument2;
 
 with (obj_player) {
     //Try to snap to block horizontally
@@ -13,7 +14,12 @@ with (obj_player) {
     }
     
     //Wallboost
-    vspeed=-12;
-    hspeed=12*dir;
-    effect_wallboost(x+sprite_xoffset*dir,y);
+    if (!strong) { //Close ranged grapples don't count
+        hspeed=5*dir;
+    } else {
+        vspeed=-12;
+        hspeed=12*dir;
+        canrush=true;
+        effect_wallboost(x+sprite_xoffset*dir,y);
+    }
 }

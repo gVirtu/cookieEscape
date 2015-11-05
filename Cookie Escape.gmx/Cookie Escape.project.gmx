@@ -8,6 +8,7 @@
   <sprites name="sprites">
     <sprite>sprites\spr_boosteffect</sprite>
     <sprite>sprites\spr_face</sprite>
+    <sprite>sprites\spr_cursortest</sprite>
     <sprite>sprites\spr_cookie_cc</sprite>
     <sprite>sprites\spr_cookie_crumble</sprite>
     <sprite>sprites\spr_camera</sprite>
@@ -32,25 +33,29 @@
     <script>scripts\player_release.gml</script>
     <script>scripts\player_wallboost.gml</script>
     <script>scripts\player_die.gml</script>
+    <script>scripts\do_swipe.gml</script>
     <script>scripts\closest_block_side.gml</script>
+    <script>scripts\effect_ripple.gml</script>
+    <script>scripts\effect_crumble.gml</script>
     <script>scripts\effect_wallboost.gml</script>
     <script>scripts\effect_grapple.gml</script>
-    <script>scripts\effect_crumble.gml</script>
     <script>scripts\init_particles.gml</script>
     <script>scripts\view_config.gml</script>
     <script>scripts\inside_view.gml</script>
-    <script>scripts\effect_ripple.gml</script>
     <script>scripts\display_get_true_width.gml</script>
+    <script>scripts\player_maketrail.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_ripple.shader</shader>
   </shaders>
   <objects name="objects">
     <object>objects\obj_controller</object>
+    <object>objects\obj_swiper</object>
     <object>objects\obj_boosttutorial</object>
     <object>objects\obj_hooktip</object>
     <object>objects\obj_camera</object>
     <object>objects\obj_player</object>
+    <object>objects\obj_playertrail</object>
     <object>objects\obj_levelblock</object>
     <object>objects\obj_block</object>
   </objects>

@@ -23,7 +23,7 @@ if (!instance_exists(obj_hooktip)) {
     for(i=0;i<5;++i) {
         if (device_mouse_check_button_pressed(i,mb_left)) {
             var mx = device_mouse_x(i)-view_xview[0];
-            var my = device_mouse_y(i);
+            var my = device_mouse_y(i)-view_yview[0];
             var gdir = -1; //Grapple direction
             
             if (mx > display_get_gui_width()*0.5) {
@@ -31,23 +31,33 @@ if (!instance_exists(obj_hooktip)) {
             }
             
             //show_message("MX = "+string(mx)+" and GUIW = "+string(display_get_gui_width()));
+            with (instance_create(x,y,obj_swiper)) {
+                did=i;
+                lastx = mx; lasty = my;
+                ds_queue_enqueue(swx,mx);
+                ds_queue_enqueue(swy,my);
+            }
             player_grapple(gdir);
         }
     }
 }
 
-if (device_mouse_check_button_released(0,mb_left)) {
-    if (instance_exists(obj_hooktip)) {
-        if (obj_hooktip.allowboosts) //Close ranged grapples don't count
-        if (instance_exists(obj_hooktip.attachedblock)) {
-            //wb_tolerance -> A little after (bigger time window)
-            //Face==0 and distance -> A little before
-            if (wb_tolerance || (face==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
-                player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir);
+for(i=0;i<1;++i) {
+    if (device_mouse_check_button_released(i,mb_left)) {
+        if (instance_exists(obj_hooktip)) {
+            if (instance_exists(obj_hooktip.attachedblock)) {
+                //wb_tolerance -> A little after (bigger time window)
+                //Face==0 and distance -> A little before
+                if (wb_tolerance || (face==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
+                    player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir, obj_hooktip.allowboosts);
+                }
             }
         }
+        with (obj_swiper) {
+            instance_destroy();
+        }
+        player_release();
     }
-    player_release();
 }
 
 //Being pulled?
@@ -63,4 +73,17 @@ if (beingpulled && abs(speed)<0.1) {
         alarm[9]=room_speed*0.2;
         speed=0;
     }
+}
+
+//Rushing?
+
+if (rushin) {
+    image_angle += 8;
+    if (speed<2) rushin=false;
+} else {
+    var targetdir=0;
+    var angspd=6;
+    var angdiff = angle_difference(image_angle,targetdir);
+    if (abs(angdiff)<angspd) image_angle=targetdir;
+    else image_angle-=sign(angdiff)*angspd;
 }

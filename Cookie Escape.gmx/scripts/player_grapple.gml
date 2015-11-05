@@ -6,6 +6,7 @@ with (obj_hooktip) instance_destroy();
 with (obj_player) {
     beingpulled=false;
     gravity=grav;
+    shaky=0;
 }
 
 with (instance_create(x+sprite_xoffset*dir,y,obj_hooktip)) {

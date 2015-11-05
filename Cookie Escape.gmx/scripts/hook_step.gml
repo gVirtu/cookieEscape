@@ -34,10 +34,12 @@ if (goback) {
                 beingpulled=true;
                 invincible=false;
                 gravity=0;
+                rushin=false;
                 
                 //Also make sure player is not inside any block
-                var col = instance_place(x,y,obj_block);
+                var col = instance_place(x+hspeed,y+vspeed,obj_block);
                 player_collision(col);
+                
             }
             
             if (allowboosts) {

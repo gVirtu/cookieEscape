@@ -54,6 +54,7 @@ ripple_enabled = true;
 pspawn_x=0;
 pspawn_y=0;
 
+lastswd=0;
 alarm[0]=1;
 </string>
           </argument>
@@ -212,6 +213,10 @@ ripple_enabled=false;
 }
 shader_reset();
 
+//DEBUG
+draw_set_color(c_white);
+draw_text(0,0,string(fps));
+draw_text(0,0,"#LAST SWDIST="+string(lastswd));
 </string>
           </argument>
         </arguments>
