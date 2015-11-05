@@ -64,7 +64,7 @@ surf=noone;
     }
 } else {
     if (alph&lt;1) alph+=0.02;
-    if (!device_mouse_check_button(0,mb_left)) {
+    if (!device_mouse_check_button(0,mb_left) &amp;&amp; alph&gt;=1) {
         tutoriald=false;
         instance_activate_all();
         //Force boost

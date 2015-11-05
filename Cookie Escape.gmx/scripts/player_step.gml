@@ -38,17 +38,42 @@ if (!instance_exists(obj_hooktip)) {
                 ds_queue_enqueue(swy,my);
             }
             player_grapple(gdir);
+            break;
         }
     }
+    
+    if (keyboard_check_pressed(vk_left)) {
+        var gdir = -1; //Grapple direction
+        player_grapple(gdir);
+    }
+    
+    if (keyboard_check_pressed(vk_right)) {
+        var gdir = 1; //Grapple direction
+        player_grapple(gdir);
+    }
+} else {
+    //Alternative swipes (hooktip exists) 
+    if (keyboard_check_pressed(ord('A'))) {
+        do_swipe(180); player_release();
+    }
+    if (keyboard_check_pressed(ord('D'))) {
+        do_swipe(0); player_release();
+    }    
+    if (keyboard_check_pressed(ord('W'))) {
+        do_swipe(90); player_release();
+    }    
+    if (keyboard_check_pressed(ord('S'))) {
+        do_swipe(270); player_release();
+    }        
 }
 
 for(i=0;i<1;++i) {
-    if (device_mouse_check_button_released(i,mb_left)) {
+    if (device_mouse_check_button_released(i,mb_left) || keyboard_check_released(vk_left) || keyboard_check_released(vk_right)) {
         if (instance_exists(obj_hooktip)) {
             if (instance_exists(obj_hooktip.attachedblock)) {
                 //wb_tolerance -> A little after (bigger time window)
-                //Face==0 and distance -> A little before
-                if (wb_tolerance || (face==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
+                //Shaky==0 and distance -> A little before
+                if (wb_tolerance || (shaky==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
                     player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir, obj_hooktip.allowboosts);
                 }
             }
@@ -57,13 +82,14 @@ for(i=0;i<1;++i) {
             instance_destroy();
         }
         player_release();
+        break;
     }
 }
 
 //Being pulled?
 
 if (beingpulled && abs(speed)<0.1) {
-    if (face==0) {
+    if (face!=1) {
         face=1;
         if (instance_exists(obj_hooktip)) { //it SHOULD always exist if we got this far... but just in case
             if (point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist) {

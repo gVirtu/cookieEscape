@@ -15,7 +15,7 @@ if (instance_exists(col)) {
         var hsh = col.sprite_height*0.5; //half-sprite width
         var c = col.y+hsh; //Center of collision
         y = c + _yf*(sprite_xoffset+hsh);
-        if (!invincible && !beingpulled && place_meeting(x,y+abs(vspeed)+3,obj_block) && _yf==-1) {
+        if (!invincible && !rushin && !beingpulled && place_meeting(x,y+abs(vspeed)+3,obj_block) && _yf==-1) {
             player_die();
         }
     }

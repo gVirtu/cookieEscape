@@ -9,7 +9,7 @@ with (obj_controller) {
     ripple_pos_y = view_hview[0]*0.5;
     
     ripple_wave_amount = shader_get_uniform(sh_ripple,"wave_amount");
-    ripple_wave_amount_var = 10; //higher = more waves
+    ripple_wave_amount_var = 16; //higher = more waves
     
     ripple_wave_distortion = shader_get_uniform(sh_ripple,"wave_distortion");
     ripple_wave_distortion_var = 30; //higher = less distortion

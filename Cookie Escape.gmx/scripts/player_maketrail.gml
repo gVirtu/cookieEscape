@@ -10,5 +10,6 @@ with (obj_player) {
         image_blend=other.image_blend;
         image_alpha=0.8;
         face=other.face;
+        ixs=other.ixs;
     }
 }

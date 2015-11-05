@@ -20,6 +20,7 @@ with (obj_player) {
         vspeed=-12;
         hspeed=12*dir;
         canrush=true;
+        face=2;
         effect_wallboost(x+sprite_xoffset*dir,y);
     }
 }

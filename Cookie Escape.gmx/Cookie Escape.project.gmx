@@ -9,6 +9,7 @@
     <sprite>sprites\spr_boosteffect</sprite>
     <sprite>sprites\spr_face</sprite>
     <sprite>sprites\spr_cursortest</sprite>
+    <sprite>sprites\spr_rushstar</sprite>
     <sprite>sprites\spr_cookie_cc</sprite>
     <sprite>sprites\spr_cookie_crumble</sprite>
     <sprite>sprites\spr_camera</sprite>
@@ -21,6 +22,7 @@
     <background>background\background1</background>
     <background>background\bg_boosttutorial</background>
     <background>background\bg_tile</background>
+    <background>background\bg_back</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -50,7 +52,9 @@
   </shaders>
   <objects name="objects">
     <object>objects\obj_controller</object>
+    <object>objects\obj_backgrounder</object>
     <object>objects\obj_swiper</object>
+    <object>objects\obj_rushstar</object>
     <object>objects\obj_boosttutorial</object>
     <object>objects\obj_hooktip</object>
     <object>objects\obj_camera</object>
@@ -62,6 +66,7 @@
   <rooms name="rooms">
     <room>rooms\rm_init</room>
     <room>rooms\rm_play</room>
+    <room>rooms\rm_play2</room>
     <room>rooms\rm_temp</room>
   </rooms>
   <constants number="2">
