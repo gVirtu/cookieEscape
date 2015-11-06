@@ -28,7 +28,9 @@
             <string>hist_count=6;
 swx=ds_queue_create();
 swy=ds_queue_create();
-swipe_dist=224;
+swipe_dist=192;
+c_x=0; //Cumulative distance
+c_y=0;
 alarm[0]=3; //Update coords 20 times per sec
 </string>
           </argument>
@@ -52,7 +54,8 @@ alarm[0]=3; //Update coords 20 times per sec
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var xdiff=0, ydiff=0;
+            <string>//Now kinda useless, just to free resources
+var xdiff=0, ydiff=0;
 var lastx, lasty, curx, cury;
 if (!ds_queue_empty(swx)) {
     lastx = ds_queue_dequeue(swx);
@@ -60,12 +63,13 @@ if (!ds_queue_empty(swx)) {
     while(!ds_queue_empty(swx)) {
         curx = ds_queue_dequeue(swx);
         cury = ds_queue_dequeue(swy);    
-        xdiff += curx-lastx;
+        /*xdiff += curx-lastx;
         ydiff += cury-lasty;
         lastx=curx;
-        lasty=cury;
+        lasty=cury;*/
     }
     
+    /*
     obj_controller.lastswd = point_distance(0,0,xdiff,ydiff);
     if (point_distance(0,0,xdiff,ydiff)&gt;swipe_dist) {
         var dir = point_direction(0,0,xdiff,ydiff);
@@ -79,6 +83,7 @@ if (!ds_queue_empty(swx)) {
         }
         do_swipe(swipedir);
     }
+    */
 }
 </string>
           </argument>
@@ -102,17 +107,37 @@ if (!ds_queue_empty(swx)) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var mx, my;
-mx = device_mouse_x(did)-view_xview[0];
-my = device_mouse_y(did)-view_yview[0];
+            <string>var mx, my, ix, iy;
+mx = (device_mouse_x(did)-view_xview[0]);
+my = (device_mouse_y(did)-view_yview[0]);
+ix = mx - lastx;
+iy = my - lasty;
+c_x += ix;
+c_y += iy;
     //Record
-    ds_queue_enqueue(swx, mx);
-    ds_queue_enqueue(swy, my);
+    ds_queue_enqueue(swx, ix);
+    ds_queue_enqueue(swy, iy);
     //Upperbound on record count
     if (ds_queue_size(swx)&gt;hist_count) {
-        ds_queue_dequeue(swx);
-        ds_queue_dequeue(swy);
+        c_x -= ds_queue_dequeue(swx); //Remove them from cumulative dists
+        c_y -= ds_queue_dequeue(swy);
     }
+    
+//The moment we get a long enough swipe, go
+if (point_distance(0,0,c_x,c_y)&gt;swipe_dist) {  
+    //show_message("C_X="+string(c_x)+"#C_Y="+string(c_y));
+    var dir = point_direction(0,0,c_x,c_y);
+    var swipedir=0;
+    if (dir&gt;=45 &amp;&amp; dir&lt;135) {
+        swipedir=90;   
+    } else if (dir&gt;=135 &amp;&amp; dir&lt;225) {
+        swipedir=180;
+    } else if (dir&gt;=225 &amp;&amp; dir&lt;315) {
+        swipedir=270;
+    }
+    do_swipe(swipedir);
+    instance_destroy();
+}
 lastx=mx; lasty=my;
 alarm[0]=2;
 </string>

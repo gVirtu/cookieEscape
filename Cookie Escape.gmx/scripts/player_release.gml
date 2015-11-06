@@ -8,6 +8,7 @@ with (obj_player) {
     else face=0;
     shaky=0;
     wb_tolerance=false;
+    devicefired=-1;
     alarm[9]=-1;
     with (obj_hooktip) {
         goback=true;

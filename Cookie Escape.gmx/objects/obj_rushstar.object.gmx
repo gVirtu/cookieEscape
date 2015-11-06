@@ -82,6 +82,7 @@ image_angle=prop*sin(act);
     powered=false;
     other.canrush=true;
     other.face=2;
+    create_expression(1);
 }
 </string>
           </argument>

@@ -4,7 +4,9 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\bgm_yourCall</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_boosteffect</sprite>
     <sprite>sprites\spr_face</sprite>
@@ -16,12 +18,24 @@
     <sprite>sprites\spr_block</sprite>
     <sprite>sprites\spr_levelblock</sprite>
     <sprite>sprites\spr_hooksegment</sprite>
+    <sprite>sprites\spr_balloon</sprite>
+    <sprite>sprites\spr_swipetip</sprite>
     <sprite>sprites\spr_hooktip</sprite>
+    <sprite>sprites\spr_sugarhookbig</sprite>
+    <sprite>sprites\spr_title</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background1</background>
+    <background>background\bg_fakebegin</background>
+    <background>background\bg_titlebeta</background>
     <background>background\bg_boosttutorial</background>
     <background>background\bg_tile</background>
+    <background>background\bg_hookintro</background>
+    <background>background\bg_hookt1</background>
+    <background>background\bg_hookt2</background>
+    <background>background\bg_tip</background>
+    <background>background\bg_tiplh</background>
+    <background>background\bg_tiprh</background>
     <background>background\bg_back</background>
   </backgrounds>
   <paths name="paths"/>
@@ -46,25 +60,39 @@
     <script>scripts\inside_view.gml</script>
     <script>scripts\display_get_true_width.gml</script>
     <script>scripts\player_maketrail.gml</script>
+    <script>scripts\create_expression.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\sh_ripple.shader</shader>
   </shaders>
+  <fonts name="fonts">
+    <font>fonts\f_fakebegin</font>
+  </fonts>
   <objects name="objects">
-    <object>objects\obj_controller</object>
-    <object>objects\obj_backgrounder</object>
-    <object>objects\obj_swiper</object>
+    <objects name="DontUse">
+      <object>objects\obj_controller</object>
+      <object>objects\obj_title</object>
+      <object>objects\obj_fakebegin</object>
+      <object>objects\obj_backgrounder</object>
+      <object>objects\obj_exbubble</object>
+      <object>objects\obj_swiper</object>
+      <object>objects\obj_swipetip</object>
+      <object>objects\obj_boosttutorial</object>
+      <object>objects\obj_camera</object>
+      <object>objects\obj_playertrail</object>
+      <object>objects\obj_hooktip</object>
+      <object>objects\obj_sugarhookbig</object>
+    </objects>
     <object>objects\obj_rushstar</object>
-    <object>objects\obj_boosttutorial</object>
-    <object>objects\obj_hooktip</object>
-    <object>objects\obj_camera</object>
     <object>objects\obj_player</object>
-    <object>objects\obj_playertrail</object>
     <object>objects\obj_levelblock</object>
     <object>objects\obj_block</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_init</room>
+    <room>rooms\rm_fakebegin</room>
+    <room>rooms\rm_title</room>
+    <room>rooms\rm_hookintro</room>
     <room>rooms\rm_play</room>
     <room>rooms\rm_play2</room>
     <room>rooms\rm_temp</room>

@@ -13,3 +13,7 @@ with (obj_player) {
     effect_crumble(x,y+sprite_yoffset-8);
     instance_destroy();
 }
+//Reset tutorialsz
+with (obj_boosttutorial) {
+    cantrigger=true;
+}

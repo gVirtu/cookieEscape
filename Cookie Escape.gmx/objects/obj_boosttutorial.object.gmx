@@ -2,7 +2,7 @@
 <object>
   <spriteName>spr_hooktip</spriteName>
   <solid>0</solid>
-  <visible>0</visible>
+  <visible>-1</visible>
   <depth>-10000000</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
@@ -28,6 +28,30 @@
             <string>tutoriald = false;
 alph=0;
 surf=noone;
+cantrigger=true;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>surface_free(surf);
 </string>
           </argument>
         </arguments>
@@ -51,11 +75,13 @@ surf=noone;
           <argument>
             <kind>1</kind>
             <string>if (!tutoriald) {
+    if (!cantrigger) exit;
     if (!instance_exists(obj_player)) exit;
     if (!instance_exists(obj_hooktip)) exit;
     if (!obj_hooktip.grappled) exit;
     if (point_distance(obj_player.x,obj_player.y,obj_hooktip.x,obj_hooktip.y) &lt; obj_player.wb_maxdist) {
-        tutoriald=true;  
+        tutoriald=true; 
+        cantrigger=false; 
         visible=true;
         surf = surface_create(surface_get_width(application_surface),surface_get_height(application_surface));  
         surface_copy(surf,0,0,application_surface);
@@ -64,7 +90,7 @@ surf=noone;
     }
 } else {
     if (alph&lt;1) alph+=0.02;
-    if (!device_mouse_check_button(0,mb_left) &amp;&amp; alph&gt;=1) {
+    if (!device_mouse_check_button(0,mb_left) &amp;&amp; !keyboard_check(vk_right) &amp;&amp; !keyboard_check(vk_left) &amp;&amp; alph&gt;=1) {
         tutoriald=false;
         instance_activate_all();
         //Force boost
@@ -73,8 +99,6 @@ surf=noone;
             player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir, true);
         }
         with (obj_swiper) instance_destroy();
-        surface_free(surf);
-        instance_destroy();
     }
 }
 </string>
@@ -102,13 +126,45 @@ surf=noone;
             <string>if (tutoriald) {
     var w = display_get_true_width();
     var h = display_get_gui_height();
-    draw_surface_stretched(surf,0,0,w,h);
+    draw_surface(surf,0,0); //was stretched to w,h
     draw_set_color(c_black);
     draw_set_alpha(alph*0.8);
     draw_rectangle(0,0,w,h,0);
     draw_background_ext(bg_boosttutorial,w*0.5-background_get_width(bg_boosttutorial)*0.5,h*0.5-background_get_height(bg_boosttutorial)*0.5,1,1,0,c_white,alph);
     draw_set_alpha(1);
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///lololo no sprite
+
+var d = (view_wview[0]-background_get_width(bg_tip))&gt;&gt;1;
+var dlh = 16;
+var drh = (view_wview[0]-background_get_width(bg_tiprh)-16);
+var dty = 88;
+
+draw_background(bg_tip,view_xview[0]+d,y-dty);
+draw_background(bg_tiplh,view_xview[0]+dlh,y+dty);
+draw_background(bg_tiprh,view_xview[0]+drh,y+dty);
 </string>
           </argument>
         </arguments>

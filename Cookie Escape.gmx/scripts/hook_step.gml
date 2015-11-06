@@ -19,16 +19,15 @@ if (goback) {
         if (place_meeting(x,y,obj_block)) {
             grappled=true;
             attachedblock = instance_place(x,y,obj_block);
-            //Make sure hook is at most inmax pixels in the block
-            var dir = point_direction(x,y,obj_player.x+xo,obj_player.y+yo);
-            var inmax = 10;
-            while(place_meeting(x+lengthdir_x(inmax,dir),y+lengthdir_y(inmax,dir),attachedblock)) {
-                x += lengthdir_x(2,dir);
-                y += lengthdir_y(2,dir);
-            }
             //Fix hook angle
             image_angle=point_direction(obj_player.x,obj_player.y,x,y);
             fixedangle=true;
+            //Make sure hook is at most inmax pixels in the block
+            var inmax = 10;
+            while(place_meeting(x-lengthdir_x(inmax,image_angle),y-lengthdir_y(inmax,image_angle),attachedblock)) {
+                x -= lengthdir_x(2,image_angle);
+                y -= lengthdir_y(2,image_angle);
+            }
             speed=0;
             with (obj_player) {
                 beingpulled=true;

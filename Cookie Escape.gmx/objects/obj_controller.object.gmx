@@ -55,6 +55,10 @@ pspawn_x=0;
 pspawn_y=0;
 
 lastswd=0;
+
+if (os_type==os_android || os_type==os_ios) global.devicenum=5;
+else global.devicenum=1;
+
 alarm[0]=1;
 </string>
           </argument>
@@ -182,6 +186,46 @@ ripple_enabled=false;
         </arguments>
       </action>
     </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>//Configure aspect ratio
+
+var base_w = view_wview[0];
+var base_h = view_hview[0];
+var aspect = base_w / base_h ; // get the GAME aspect ratio
+if (display_get_gui_width() &lt; display_get_gui_height())
+    {
+    //portrait
+    var ww = display_get_gui_width();
+    var hh = ww / aspect;
+    }
+else
+    {
+    //landscape
+    var hh = display_get_gui_height();
+    var ww = hh * aspect;
+    }
+surface_resize(application_surface, ww, hh);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
@@ -209,14 +253,21 @@ ripple_enabled=false;
         shader_set_uniform_f(ripple_wave_distortion, ripple_wave_distortion_var );
         shader_set_uniform_f(ripple_wave_speed, ripple_wave_speed_var);
     }
-    draw_surface_stretched(application_surface,0,0,display_get_true_width(),display_get_gui_height());
+    draw_surface(application_surface,0,0);
+    //draw_surface_stretched(application_surface,0,0,display_get_true_width(),display_get_gui_height());
 }
 shader_reset();
 
 //DEBUG
+/*
 draw_set_color(c_white);
 draw_text(0,0,string(fps));
-draw_text(0,0,"#LAST SWDIST="+string(lastswd));
+draw_text(0,0,"#GUI_W="+string(display_get_gui_width()));
+draw_text(0,0,"##GUI_H="+string(display_get_gui_height()));
+draw_text(0,0,"###D_W="+string(display_get_width()));
+draw_text(0,0,"####D_H="+string(display_get_height()));
+draw_text(0,0,"#####AS_W="+string(surface_get_width(application_surface)));
+draw_text(0,0,"######AS_H="+string(surface_get_height(application_surface)));*/
 </string>
           </argument>
         </arguments>

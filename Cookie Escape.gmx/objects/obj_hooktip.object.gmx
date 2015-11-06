@@ -25,18 +25,22 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>xo=x-obj_player.x;
-yo=y-obj_player.y;
-goback=0;
-grappled=false;
-pullspd=12;
-backprop=0.3; //How fast the hook will retreat
-attachedblock=noone;
-allowboosts=false;
-fixedangle=false;
-boostdir=0; //Direction in which player gets propelled when timing is correct (set by player_grapple)
-alarm[0]=room_speed*0.4;
-alarm[1]=5;
+            <string>if (instance_exists(obj_player)) {
+    xo=x-obj_player.x;
+    yo=y-obj_player.y;
+} else {
+    xo=0; yo=0; instance_destroy();
+}
+    goback=0;
+    grappled=false;
+    pullspd=12;
+    backprop=0.3; //How fast the hook will retreat
+    attachedblock=noone;
+    allowboosts=false;
+    fixedangle=false;
+    boostdir=0; //Direction in which player gets propelled when timing is correct (set by player_grapple)
+    alarm[0]=room_speed*0.4;
+    alarm[1]=5;
 </string>
           </argument>
         </arguments>

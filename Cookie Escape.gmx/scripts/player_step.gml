@@ -18,40 +18,50 @@ if (gravity > 0 &&
 
 //Fired hook?
 
-if (!instance_exists(obj_hooktip)) {
-    var i;
-    for(i=0;i<5;++i) {
-        if (device_mouse_check_button_pressed(i,mb_left)) {
-            var mx = device_mouse_x(i)-view_xview[0];
-            var my = device_mouse_y(i)-view_yview[0];
-            var gdir = -1; //Grapple direction
-            
-            if (mx > display_get_gui_width()*0.5) {
-                gdir = 1;    
-            }
-            
-            //show_message("MX = "+string(mx)+" and GUIW = "+string(display_get_gui_width()));
-            with (instance_create(x,y,obj_swiper)) {
-                did=i;
-                lastx = mx; lasty = my;
-                ds_queue_enqueue(swx,mx);
-                ds_queue_enqueue(swy,my);
-            }
+var i;
+for(i=0;i<global.devicenum;++i) {
+    if (device_mouse_check_button_pressed(i,mb_left)) {
+        var mx = device_mouse_x(i)-view_xview[0];
+        var my = device_mouse_y(i)-view_yview[0];
+        var gdir = -1; //Grapple direction
+        
+        if (mx > display_get_gui_width()*0.5) {
+            gdir = 1;    
+        }
+        
+        //show_message("MX = "+string(mx)+" and GUIW = "+string(display_get_gui_width()));
+        //Create a swipe controller for each touch
+        with (instance_create(x,y,obj_swiper)) {
+            did=i;
+            lastx = mx; lasty = my;
+            ds_queue_enqueue(swx,0);
+            ds_queue_enqueue(swy,0);
+        }
+        
+        if (!instance_exists(obj_hooktip)) {
             player_grapple(gdir);
+            devicefired=i;
             break;
         }
     }
-    
+}
+
+//Alternative keyboard grapple controls
+if (!instance_exists(obj_hooktip)) {
     if (keyboard_check_pressed(vk_left)) {
+        devicefired=0;
         var gdir = -1; //Grapple direction
         player_grapple(gdir);
     }
     
     if (keyboard_check_pressed(vk_right)) {
+        devicefired=0;
         var gdir = 1; //Grapple direction
         player_grapple(gdir);
     }
-} else {
+}
+
+if (instance_exists(obj_hooktip)) {
     //Alternative swipes (hooktip exists) 
     if (keyboard_check_pressed(ord('A'))) {
         do_swipe(180); player_release();
@@ -67,21 +77,26 @@ if (!instance_exists(obj_hooktip)) {
     }        
 }
 
-for(i=0;i<1;++i) {
-    if (device_mouse_check_button_released(i,mb_left) || keyboard_check_released(vk_left) || keyboard_check_released(vk_right)) {
-        if (instance_exists(obj_hooktip)) {
-            if (instance_exists(obj_hooktip.attachedblock)) {
-                //wb_tolerance -> A little after (bigger time window)
-                //Shaky==0 and distance -> A little before
-                if (wb_tolerance || (shaky==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
-                    player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir, obj_hooktip.allowboosts);
+for(i=0;i<global.devicenum;++i) {
+    if (device_mouse_check_button_released(i,mb_left) || (i==0 && (keyboard_check_released(vk_left) || keyboard_check_released(vk_right)))) {
+        if (devicefired==i) { //Was the hook fired from this touch?
+            if (instance_exists(obj_hooktip)) {
+                if (instance_exists(obj_hooktip.attachedblock)) {
+                    //wb_tolerance -> A little after (bigger time window)
+                    //Shaky==0 and distance -> A little before
+                    if (wb_tolerance || (shaky==0 && point_distance(x,y,obj_hooktip.x,obj_hooktip.y) < wb_maxdist)) {
+                        player_wallboost(obj_hooktip.attachedblock, obj_hooktip.boostdir, obj_hooktip.allowboosts);
+                    }
                 }
             }
+            player_release();
         }
         with (obj_swiper) {
-            instance_destroy();
+            if (did==i) {
+                instance_destroy();
+            }
         }
-        player_release();
+        
         break;
     }
 }

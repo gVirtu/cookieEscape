@@ -20,7 +20,14 @@ with (obj_player) {
         vspeed=-12;
         hspeed=12*dir;
         canrush=true;
+        if (failedattempt) { //Show that rush is charged
+            failedattempt=false;
+            create_expression(1);
+        }
         face=2;
         effect_wallboost(x+sprite_xoffset*dir,y);
+        
+        with (obj_boosttutorial)
+            instance_destroy();
     }
 }
